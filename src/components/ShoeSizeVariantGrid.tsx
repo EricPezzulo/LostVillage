@@ -18,7 +18,6 @@ const ShoeSizeVariantGrid: React.FC<ShowSizeVariantGirdProps> = ({
   setSelectedSize,
   sizes,
 }) => {
-  console.log(sizes);
   return (
     <div className={`${ptSans.variable} font-PT-sans`}>
       <p className="text-lg font-semibold">Sizes</p>

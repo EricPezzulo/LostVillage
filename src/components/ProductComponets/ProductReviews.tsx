@@ -17,8 +17,8 @@ type ReviewWithUser = RouterOutputs["reviews"]["getAll"][number];
 
 const ProductReview = (props: ReviewWithUser) => {
   const { review, author } = props;
-
-  if (props?.reviewsIsLoading) return <div>Loading...</div>;
+  console.log(props);
+  // if (reviewsIsLoading) return <div>Loading...</div>;
   if (!review) return <div>Something went wrong</div>;
 
   return (
@@ -51,6 +51,9 @@ const ProductReviews = () => {
   // const { data: products } = api.products.getAll.useQuery();
   const { data: reviews, isLoading: reviewsIsLoading } =
     api.reviews.getAll.useQuery();
+
+  const { data } = api.reviews.getAll.useQuery();
+  // console.log(reviewsIsLoading);
   return (
     <button
       type="button"
@@ -92,7 +95,7 @@ const ProductReviews = () => {
                 <ProductReview
                   {...review}
                   key={key}
-                  reviewsIsLoading={reviewsIsLoading}
+                  // reviewsIsLoading={reviewsIsLoading}
                 />
               ))}
             </div>
