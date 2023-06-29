@@ -8,7 +8,12 @@ const ptSans = PT_Sans({
   subsets: ["latin"],
   weight: ["400", "700"],
 });
-const ProductDescription = () => {
+
+interface DescriptionProps {
+  description: string;
+}
+
+const ProductDescription: React.FC<DescriptionProps> = ({ description }) => {
   const [showDesc, setShowDesc] = useState<boolean>(false);
   const handleShowDesc = () => {
     setShowDesc((prev) => !prev);
@@ -43,11 +48,8 @@ const ProductDescription = () => {
             transition={{ duration: 0.2 }}
             style={{ overflow: "hidden", position: "relative" }}
           >
-            <p className={`${ptSans.variable} py-4 text-left font-PT-sans`}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure
-              eligendi totam nemo ipsa ad illum voluptates provident, quam sunt
-              esse ducimus assumenda, a at vel dolore! Fugiat porro recusandae
-              esse.
+            <p className={`${ptSans.variable} font-PT-sans py-4 text-left`}>
+              {description}
             </p>
           </motion.div>
         )}

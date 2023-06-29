@@ -9,7 +9,10 @@ const ptSans = PT_Sans({
   weight: ["400", "700"],
 });
 
-const ProductDetails = () => {
+interface DetailsProps {
+  details: string[];
+}
+const ProductDetails: React.FC<DetailsProps> = ({ details }) => {
   const [showDetails, setShowDetails] = useState<boolean>(false);
   const handleShowDetails = () => {
     setShowDetails((prev) => !prev);
@@ -44,10 +47,11 @@ const ProductDetails = () => {
             style={{ overflow: "hidden", position: "relative" }}
           >
             <ul className={`${ptSans.variable} font-PT-sans py-4 text-left`}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure
-              eligendi totam nemo ipsa ad illum voluptates provident, quam sunt
-              esse ducimus assumenda, a at vel dolore! Fugiat porro recusandae
-              esse.
+              {details.map((detail, key) => (
+                <li className="py-1" key={key}>
+                  &#x2022; {detail}
+                </li>
+              ))}
             </ul>
           </motion.div>
         )}

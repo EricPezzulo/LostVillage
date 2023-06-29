@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { PT_Sans, Sofia_Sans } from "next/font/google";
+import { PT_Sans, Sofia_Sans, Tourney } from "next/font/google";
 import { useState } from "react";
 import { CiRuler } from "react-icons/ci";
 import ShoeSizeVariantGrid from "~/components/ShoeSizeVariantGrid";
@@ -7,6 +7,10 @@ import ProductReviews from "~/components/ProductComponets/ProductReviews";
 import ProductDescription from "~/components/ProductComponets/ProductDescription";
 import ProductDetails from "~/components/ProductComponets/ProductDetails";
 import SizeGuide from "~/components/ProductComponets/SizeGuide";
+import { api } from "~/utils/api";
+import { useRouter } from "next/router";
+import { GetServerSideProps } from "next";
+import { ProductImageCarousel } from "~/components/ProductComponets/ProductImageCarousel";
 
 const sofia = Sofia_Sans({
   variable: "--font-sofia",
@@ -23,6 +27,7 @@ const ptSans = PT_Sans({
 interface pageProps {
   params: { product: string };
 }
+
 const Page: React.FC<pageProps> = () => {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [showSizeGuide, setShowSizeGuide] = useState<boolean>(false);
@@ -31,6 +36,16 @@ const Page: React.FC<pageProps> = () => {
     setShowSizeGuide((prev) => !prev);
   };
 
+  // const productId = router.query.id?.[0];
+  const productId = "LY102";
+
+  const { data, isLoading } = api.products.getProductById.useQuery({
+    productId,
+  });
+  // console.log(data);
+  if (isLoading) return <div>Loading...</div>;
+  if (!data) return <div>something went wrong</div>;
+
   return (
     <div className="relative flex  w-full flex-col items-center">
       <div
@@ -38,30 +53,30 @@ const Page: React.FC<pageProps> = () => {
       >
         <div className="py-2">
           <h3 className={`font-PT-sans text-xl font-semibold`}>
-            Nike Air Jordan 1
+            {data?.title}
           </h3>
-          <p className="font-semibold text-gray-600">Men&apos;s Shoes</p>
+          <p className="font-semibold text-gray-600">{data?.category}</p>
         </div>
-        <p className="pb-2 font-semibold">$120</p>
+        <p className="pb-2 font-semibold">${data?.price}</p>
       </div>
 
-      <div>
-        <img
-          src="https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/cf2e9611-78c8-47e8-b109-7cf5f66087f1/air-jordan-1-mid-mens-shoes-b3js2D.png"
-          alt="test"
-        />
+      {/* swipe to go to next image */}
+      <div className="w-full">
+        <ProductImageCarousel images={data.imageURLs} />
       </div>
+
       <div className="w-full p-5">
-        <p className={`${ptSans.variable} font-PT-sans`}>5 colors available</p>
+        <p className={`${ptSans.variable} font-PT-sans`}>
+          {data?.variants.length} colors available
+        </p>
         <div className="flex w-full items-start ">
-          <div className="h-14 w-14 bg-gray-400" />
-          <div className="ml-2 h-14 w-14 bg-gray-400" />
-          <div className="ml-2 h-14 w-14 bg-gray-400" />
-          <div className="ml-2 h-14 w-14 bg-gray-400" />
-          <div className="ml-2 h-14 w-14 bg-gray-400" />
+          {data?.variants.map((variant, key) => (
+            <div key={key} className="ml-2 h-14 w-14 bg-gray-400 first:ml-0 " />
+          ))}
         </div>
       </div>
       <ShoeSizeVariantGrid
+        sizes={data.shoeSizes}
         selectedSize={selectedSize}
         setSelectedSize={setSelectedSize}
       />
@@ -89,11 +104,10 @@ const Page: React.FC<pageProps> = () => {
           </p>
         </button>
       </div>
-      <div></div>
       <div className="w-full pt-5">
         <ProductReviews />
-        <ProductDescription />
-        <ProductDetails />
+        <ProductDescription description={data.description} />
+        <ProductDetails details={data.details} />
       </div>
       <SizeGuide
         showSizeGuide={showSizeGuide}
