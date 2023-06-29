@@ -5,8 +5,8 @@ import ProductSlider from "~/components/ProductSlider";
 import { api } from "~/utils/api";
 
 export default function Home() {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
-  console.log(hello);
+  const { data } = api.reviews.getAll.useQuery();
+
   return (
     <>
       <Hero />

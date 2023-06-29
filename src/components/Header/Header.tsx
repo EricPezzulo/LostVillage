@@ -6,7 +6,6 @@ import MobileMenu from "./MobileMenu";
 import Link from "next/link";
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { AiOutlineUser } from "react-icons/ai";
-import useDisableScroll from "~/hooks/useDisableScroll";
 
 const sofia = Sofia_Sans({
   subsets: ["latin"],
@@ -16,9 +15,6 @@ const sofia = Sofia_Sans({
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState<boolean>(false);
-
-  useDisableScroll({ showMenu });
-
   return (
     <header className="justif relative flex h-14 w-full items-center justify-between bg-white px-5">
       <button

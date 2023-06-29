@@ -2,13 +2,11 @@
 import { PT_Sans, Sofia_Sans } from "next/font/google";
 import { useState } from "react";
 import { CiRuler } from "react-icons/ci";
-
 import ShoeSizeVariantGrid from "~/components/ShoeSizeVariantGrid";
 import ProductReviews from "~/components/ProductComponets/ProductReviews";
 import ProductDescription from "~/components/ProductComponets/ProductDescription";
 import ProductDetails from "~/components/ProductComponets/ProductDetails";
 import SizeGuide from "~/components/ProductComponets/SizeGuide";
-import Layout from "~/Layouts/Layout";
 
 const sofia = Sofia_Sans({
   variable: "--font-sofia",
@@ -25,7 +23,7 @@ const ptSans = PT_Sans({
 interface pageProps {
   params: { product: string };
 }
-const Page: React.FC<pageProps> = ({ params }) => {
+const Page: React.FC<pageProps> = () => {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [showSizeGuide, setShowSizeGuide] = useState<boolean>(false);
 

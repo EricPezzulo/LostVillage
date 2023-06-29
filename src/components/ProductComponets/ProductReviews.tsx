@@ -3,6 +3,9 @@ import { PT_Sans } from "next/font/google";
 import React, { useState } from "react";
 import { BiChevronDown } from "react-icons/bi";
 import StarRating from "./StarRating";
+import { api } from "~/utils/api";
+import type { RouterOutputs } from "~/utils/api";
+// import { useUser } from "@clerk/nextjs";
 
 const ptSans = PT_Sans({
   variable: "--font-PT-sans",
@@ -10,11 +13,47 @@ const ptSans = PT_Sans({
   weight: ["400", "700"],
 });
 
+type ReviewWithUser = RouterOutputs["reviews"]["getAll"][number];
+
+const ProductReview = ({ review }: ReviewWithUser) => {
+  // console.log(review);
+  return (
+    <div
+      key={review.id}
+      className={`${ptSans.variable} font-PT-sans flex flex-col border-t  px-5 py-4 text-left`}
+    >
+      <StarRating
+        starColor="text-black"
+        totalStars={review.starCount}
+        rating={5}
+      />
+      <p className="font-semibold">{review.title}</p>
+
+      <p>{review.content}</p>
+      <div className="pt-3">
+        <p className="text-sm text-gray-500">
+          {review.authorId} | {review.createdAt.toDateString()}
+        </p>
+      </div>
+    </div>
+  );
+};
+
 const ProductReviews = () => {
   const [showReviews, setShowReviews] = useState<boolean>(false);
   const handleShowReviews = () => {
     setShowReviews((prev) => !prev);
   };
+  // const { data, isLoading } = api.reviews.getAll.useQuery();
+  // const { data: products } = api.products.getAll.useQuery();
+  const { data: reviews } = api.reviews.getAll.useQuery();
+
+  // const { user } = useUser();
+
+  console.log(reviews);
+  // if (isLoading) return <div>Loading...</div>;
+  // if (!reviews) return <div>Something went wrong</div>;
+
   return (
     <button
       type="button"
@@ -24,7 +63,7 @@ const ProductReviews = () => {
       <div className="flex w-full items-center justify-between py-5">
         <div className="flex items-center pl-5">
           <h4 className={`${ptSans.variable} font-PT-sans font-semibold`}>
-            Reviews (2)
+            Reviews ()
           </h4>
         </div>
 
@@ -49,37 +88,13 @@ const ProductReviews = () => {
             exit={{ height: 0, opacity: 1 }}
             transition={{ duration: 0.2 }}
             style={{ overflow: "hidden", position: "relative" }}
+            className="w-full"
           >
-            <div>
-              <div
-                className={`${ptSans.variable} border-b px-5 py-4 text-left font-PT-sans`}
-              >
-                <p className="font-semibold">Amazing sneakers!</p>
-                <StarRating starColor="text-black" totalStars={5} rating={5} />
-                <p>
-                  Iure eligendi totam nemo ipsa ad illum voluptates provident,
-                  quam sunt esse ducimus assumenda, a at vel dolore! Fugiat
-                  porro recusandae esse.
-                </p>
-                <div className="pt-3">
-                  <p className="text-sm text-gray-500">Jack | June 12, 2023 </p>
-                </div>
-              </div>
-              <div
-                className={`${ptSans.variable} px-5 py-4 text-left font-PT-sans`}
-              >
-                <p className="font-semibold">Best shoe ever made</p>
-                <StarRating starColor="text-black" totalStars={5} rating={5} />
-                <p>
-                  Iure eligendi totam nemo ipsa ad illum voluptates provident,
-                  quam sunt esse ducimus assumenda, a at vel dolore! Fugiat
-                  porro recusandae esse.
-                </p>
-                <div className="pt-3">
-                  <p className="text-sm text-gray-500">Jack | June 12, 2023 </p>
-                </div>
-              </div>
-            </div>
+            {/* <div>
+              {reviews?.map((review) => (
+                <ProductReview review={review} key={review.id} />
+              ))}
+            </div> */}
           </motion.div>
         )}
       </AnimatePresence>

@@ -5,6 +5,7 @@ import { IoCloseOutline } from "react-icons/io5";
 import { AiOutlineRight } from "react-icons/ai";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import useDisableScroll from "~/hooks/useDisableScroll";
 interface MenuProps {
   showMenu: boolean;
   setShowMenu: React.Dispatch<React.SetStateAction<boolean>>;
@@ -21,6 +22,7 @@ const ptSans = PT_Sans({
 });
 
 const MobileMenu: React.FC<MenuProps> = ({ showMenu, setShowMenu }) => {
+  useDisableScroll({ showMenu });
   const router = useRouter();
   const goToMens = () => {
     router
