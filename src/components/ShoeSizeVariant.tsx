@@ -23,8 +23,8 @@ const ShoeSizeVariant: React.FC<ShoeSizeProps> = ({
       type="button"
       onClick={handleSelect}
       className={classNames(
-        selectedSize === variantSize ? "bg-sky-100" : null,
-        `flex h-10 w-full items-center justify-center rounded border duration-100 ease-in-out sm:w-28`
+        selectedSize === variantSize ? "bg-gray-200" : null,
+        `flex h-10 w-full items-center justify-center rounded border duration-100 ease-in-out hover:bg-gray-200 sm:w-28`
       )}
     >
       <p className="flex text-sm text-gray-800 sm:text-base">

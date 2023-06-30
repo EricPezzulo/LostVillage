@@ -8,10 +8,13 @@ export const reviewsRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
     const reviews = await ctx.prisma.review.findMany();
 
-    const users = await clerkClient.users.getUserList({
-      userId: reviews.map((review) => review.authorId),
-    });
+    const users = (
+      await clerkClient.users.getUserList({
+        userId: reviews.map((review) => review.authorId),
+      })
+    ).map(filterUserForClient);
 
+    console.log(users);
     return reviews.map((review) => {
       const author = users.find((user) => user.id === review.authorId);
       if (!author)
@@ -26,3 +29,11 @@ export const reviewsRouter = createTRPCRouter({
     });
   }),
 });
+
+const filterUserForClient = (user: User) => {
+  return {
+    id: user.id,
+    username: user.username,
+    profileImageUrl: user.profileImageUrl,
+  };
+};
