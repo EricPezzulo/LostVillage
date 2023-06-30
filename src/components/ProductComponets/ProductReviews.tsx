@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { PT_Sans } from "next/font/google";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BiChevronDown } from "react-icons/bi";
 import StarRating from "./StarRating";
 import { api } from "~/utils/api";
@@ -44,23 +44,22 @@ const ProductReview = (props: ReviewWithUser) => {
 
 const ProductReviews = () => {
   const [showReviews, setShowReviews] = useState<boolean>(false);
+  const [totalStars, setTotalStars] = useState<number>(0);
+
   const handleShowReviews = () => {
     setShowReviews((prev) => !prev);
   };
-  // const { data, isLoading } = api.reviews.getAll.useQuery();
-  // const { data: products } = api.products.getAll.useQuery();
-  const { data: reviews, isLoading: reviewsIsLoading } =
-    api.reviews.getAll.useQuery();
 
-  const { data } = api.reviews.getAll.useQuery();
-  // console.log(reviewsIsLoading);
+  const { data: reviews } = api.reviews.getAll.useQuery();
+  //add variable star numbers. will have to change prisma schema to store avgRating
+  //and after every rating is pushed to db, a function will have to recalutate the avg Rating
   return (
-    <button
-      type="button"
-      className="flex w-full flex-col items-center justify-between border-t"
-      onClick={handleShowReviews}
-    >
-      <div className="flex w-full items-center justify-between py-5">
+    <div className="flex w-full flex-col items-center justify-between border-t">
+      <button
+        onClick={handleShowReviews}
+        type="button"
+        className="flex w-full items-center justify-between py-5"
+      >
         <div className="flex items-center pl-5">
           <h4 className={`${ptSans.variable} font-PT-sans font-semibold`}>
             Reviews ({reviews?.length})
@@ -79,7 +78,7 @@ const ProductReviews = () => {
             </motion.div>
           </AnimatePresence>
         </div>
-      </div>
+      </button>
       <AnimatePresence>
         {showReviews && (
           <motion.div
@@ -92,17 +91,13 @@ const ProductReviews = () => {
           >
             <div>
               {reviews?.map((review, key) => (
-                <ProductReview
-                  {...review}
-                  key={key}
-                  // reviewsIsLoading={reviewsIsLoading}
-                />
+                <ProductReview {...review} key={key} />
               ))}
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </button>
+    </div>
   );
 };
 

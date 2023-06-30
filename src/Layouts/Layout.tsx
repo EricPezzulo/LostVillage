@@ -3,7 +3,7 @@ import Header from "~/components/Header/Header";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="min-h-screen sm:min-h-0">
+    <div className="flex min-h-screen flex-col">
       <Header />
       {children}
       <Footer />

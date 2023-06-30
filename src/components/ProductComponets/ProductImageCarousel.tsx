@@ -6,19 +6,22 @@ import type { FC } from "react";
 interface ImagesProps {
   images: string[];
 }
+
 export const ProductImageCarousel: FC<ImagesProps> = ({ images }) => {
   return (
-    <Swiper
-      spaceBetween={50}
-      slidesPerView={1}
-      onSlideChange={() => console.log("slide change")}
-      onSwiper={(swiper) => console.log(swiper)}
-    >
-      {images.map((image, key) => (
-        <SwiperSlide key={key}>
-          <img src={image} alt="test" />
-        </SwiperSlide>
-      ))}
-    </Swiper>
+    <div className="w-full">
+      <Swiper
+        spaceBetween={50}
+        slidesPerView={1}
+        onSlideChange={() => console.log("slide change")}
+        onSwiper={(swiper) => console.log(swiper)}
+      >
+        {images.map((image, key) => (
+          <SwiperSlide key={key}>
+            <img src={image} alt="test" />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </div>
   );
 };
