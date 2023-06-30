@@ -20,7 +20,7 @@ const ProductDetails: React.FC<DetailsProps> = ({ details }) => {
   return (
     <button
       type="button"
-      className="flex w-full flex-col items-center justify-between border-y p-5"
+      className="flex w-full flex-col items-center justify-between border-y border-t p-5 md:mb-3 md:rounded-md md:border "
       onClick={handleShowDetails}
     >
       <div className="flex w-full justify-between">
@@ -45,10 +45,11 @@ const ProductDetails: React.FC<DetailsProps> = ({ details }) => {
             exit={{ height: 0, opacity: 1 }}
             transition={{ duration: 0.2 }}
             style={{ overflow: "hidden", position: "relative" }}
+            className="w-full"
           >
-            <ul className={`${ptSans.variable} font-PT-sans py-4 text-left`}>
+            <ul className={`${ptSans.variable} py-4 text-left font-PT-sans`}>
               {details.map((detail, key) => (
-                <li className="py-1" key={key}>
+                <li className=" py-1" key={key}>
                   &#x2022; {detail}
                 </li>
               ))}

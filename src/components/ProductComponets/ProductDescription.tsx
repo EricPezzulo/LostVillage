@@ -22,12 +22,12 @@ const ProductDescription: React.FC<DescriptionProps> = ({ description }) => {
   return (
     <button
       type="button"
-      className="flex w-full flex-col items-center justify-between border-t p-5"
+      className="flex w-full flex-col items-center justify-between border-t p-5 md:mb-3 md:rounded-md md:border"
       onClick={handleShowDesc}
     >
       <div className="flex w-full justify-between">
         <h4 className={`${ptSans.variable} font-PT-sans font-semibold`}>
-          Description
+          Details
         </h4>
         <AnimatePresence>
           <motion.div
@@ -47,8 +47,9 @@ const ProductDescription: React.FC<DescriptionProps> = ({ description }) => {
             exit={{ height: 0, opacity: 1 }}
             transition={{ duration: 0.2 }}
             style={{ overflow: "hidden", position: "relative" }}
+            className="w-full"
           >
-            <p className={`${ptSans.variable} font-PT-sans py-4 text-left`}>
+            <p className={`${ptSans.variable} py-4 text-left font-PT-sans`}>
               {description}
             </p>
           </motion.div>

@@ -23,11 +23,11 @@ const ShoeSizeVariant: React.FC<ShoeSizeProps> = ({
       type="button"
       onClick={handleSelect}
       className={classNames(
-        selectedSize === variantSize ? "bg-gray-300" : null,
-        `flex h-10 w-28 items-center justify-center rounded border duration-100 ease-in-out`
+        selectedSize === variantSize ? "bg-sky-100" : null,
+        `flex h-10 w-full items-center justify-center rounded border duration-100 ease-in-out sm:w-28`
       )}
     >
-      <p className="flex text-gray-800">
+      <p className="flex text-sm text-gray-800 sm:text-base">
         M {men} / W {women}
       </p>
     </button>

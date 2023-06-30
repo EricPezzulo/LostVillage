@@ -24,7 +24,7 @@ const ProductReview = (props: ReviewWithUser) => {
   return (
     <div
       key={review.id}
-      className={`${ptSans.variable} font-PT-sans flex flex-col border-t  px-5 py-4 text-left`}
+      className={`${ptSans.variable} flex flex-col border-t px-5  py-4 text-left font-PT-sans`}
     >
       <StarRating
         starColor="text-black"
@@ -51,10 +51,12 @@ const ProductReviews = () => {
   };
 
   const { data: reviews } = api.reviews.getAll.useQuery();
+
   //add variable star numbers. will have to change prisma schema to store avgRating
   //and after every rating is pushed to db, a function will have to recalutate the avg Rating
+
   return (
-    <div className="flex w-full flex-col items-center justify-between border-t">
+    <div className="flex w-full flex-col items-center justify-between border-t md:mb-3 md:rounded-md md:border ">
       <button
         onClick={handleShowReviews}
         type="button"
@@ -79,6 +81,7 @@ const ProductReviews = () => {
           </AnimatePresence>
         </div>
       </button>
+
       <AnimatePresence>
         {showReviews && (
           <motion.div

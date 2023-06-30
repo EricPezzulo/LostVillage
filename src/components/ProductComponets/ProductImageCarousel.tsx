@@ -9,7 +9,7 @@ interface ImagesProps {
 
 export const ProductImageCarousel: FC<ImagesProps> = ({ images }) => {
   return (
-    <div className="w-full">
+    <div className="w-full sm:w-96">
       <Swiper
         spaceBetween={50}
         slidesPerView={1}
@@ -18,7 +18,7 @@ export const ProductImageCarousel: FC<ImagesProps> = ({ images }) => {
       >
         {images.map((image, key) => (
           <SwiperSlide key={key}>
-            <img src={image} alt="test" />
+            <img className="sm:rounded" src={image} alt="test" />
           </SwiperSlide>
         ))}
       </Swiper>

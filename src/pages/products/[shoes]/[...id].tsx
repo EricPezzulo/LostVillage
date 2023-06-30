@@ -11,7 +11,8 @@ import { api } from "~/utils/api";
 import { ProductImageCarousel } from "~/components/ProductComponets/ProductImageCarousel";
 import ProductScreenLoadingSkeleton from "~/components/Skeletons/ProductScreenLoadingSkeleton";
 import type { NextPageContext } from "next";
-import Error404Page from "~/components/Error404Page";
+import Custom404 from "~/pages/404";
+import ProductHeaderInfo from "~/components/ProductComponets/ProductHeaderInfo";
 
 interface pageProps {
   productId: string;
@@ -30,44 +31,64 @@ const Page: React.FC<pageProps> = (props) => {
     productId: productId,
   });
 
-  // console.log(data);
-  // const isLoadingg = true;
   if (isLoading) return <ProductScreenLoadingSkeleton />;
 
-  if (!data) return <Error404Page />;
+  if (!data) return <Custom404 />;
 
   return (
-    <div className="relative flex  w-full flex-col items-center">
-      <div
-        className={`${ptSans.variable} font-PT-sans flex w-full flex-col items-start pl-5`}
-      >
-        <div className="py-2">
-          <h3 className={`font-PT-sans text-xl font-semibold`}>
-            {data?.title}
-          </h3>
-          <p className="font-semibold text-gray-600">{data?.category}</p>
-        </div>
-        <p className="pb-2 font-semibold">${data?.price}</p>
+    <div className="relative flex w-full max-w-7xl grow flex-col items-center bg-white sm:justify-center sm:self-center lg:py-5">
+      <div className="flex w-full sm:hidden">
+        <ProductHeaderInfo
+          title={data?.title}
+          category={data.category}
+          price={data.price}
+        />
       </div>
-
-      <ProductImageCarousel images={data.imageURLs} />
-
-      <div className="w-full p-5">
-        <p className={`${ptSans.variable} font-PT-sans`}>
-          {data?.variants.length} colors available
-        </p>
-        <div className="flex w-full items-start ">
-          {data?.variants.map((variant, key) => (
-            <div key={key} className="ml-2 h-14 w-14 bg-gray-400 first:ml-0 " />
-          ))}
+      <div className="flex w-full max-w-5xl flex-col justify-center  sm:flex-row">
+        <ProductImageCarousel images={data.imageURLs} />
+        <div className=" sm:pl-5 lg:w-full">
+          <div className="hidden sm:block">
+            <ProductHeaderInfo
+              title={data?.title}
+              category={data.category}
+              price={data.price}
+            />
+          </div>
+          <div className="w-full p-5 sm:pl-0">
+            <p className={`${ptSans.variable} font-PT-sans`}>
+              {data?.variants.length} colors available
+            </p>
+            <div className="flex w-full items-start ">
+              {data?.variants.map((variant, key) => (
+                <div
+                  key={key}
+                  className="ml-2 h-14 w-14 bg-gray-400 first:ml-0 "
+                />
+              ))}
+            </div>
+          </div>
+          <ShoeSizeVariantGrid
+            sizes={data.shoeSizes}
+            selectedSize={selectedSize}
+            setSelectedSize={setSelectedSize}
+          />
+          <div className="mt-4 hidden  sm:flex">
+            <button
+              className=" flex h-10 w-36 items-center justify-center rounded-full bg-black hover:cursor-pointer sm:inset-0 sm:flex "
+              type="button"
+              disabled={!selectedSize}
+              onClick={() => console.log("button works")}
+            >
+              <p
+                className={` ${sofia.variable} font-sofia font-semibold text-white`}
+              >
+                {!selectedSize ? "SELECT SIZE" : "ADD TO CART"}
+              </p>
+            </button>{" "}
+          </div>
         </div>
       </div>
-      <ShoeSizeVariantGrid
-        sizes={data.shoeSizes}
-        selectedSize={selectedSize}
-        setSelectedSize={setSelectedSize}
-      />
-      <div className="flex w-full items-start py-4 pl-4">
+      <div className="flex w-full  items-start py-4 pl-4 md:max-w-3xl lg:max-w-5xl">
         <CiRuler className="h-6 w-6" />
         <button
           type="button"
@@ -77,21 +98,19 @@ const Page: React.FC<pageProps> = (props) => {
           Size guide
         </button>
       </div>
-      <div>
-        <button
-          className="m-2 flex h-10 w-36 items-center justify-center rounded-full bg-black hover:cursor-pointer"
-          type="button"
-          disabled={!selectedSize}
-          onClick={() => console.log("button works")}
-        >
-          <p
-            className={` ${sofia.variable} font-sofia font-semibold text-white`}
-          >
-            {!selectedSize ? "SELECT SIZE" : "ADD TO CART"}
-          </p>
-        </button>
-      </div>
-      <div className="w-full pt-5">
+
+      <button
+        className="m-2 mx-5 flex h-14 w-5/6 items-center justify-center rounded-full bg-black hover:cursor-pointer sm:hidden"
+        type="button"
+        disabled={!selectedSize}
+        onClick={() => console.log("button works")}
+      >
+        <p className={` ${sofia.variable} font-sofia font-semibold text-white`}>
+          {!selectedSize ? "SELECT SIZE" : "ADD TO CART"}
+        </p>
+      </button>
+
+      <div className="w-full pt-5  md:max-w-3xl lg:max-w-5xl">
         <ProductReviews />
         <ProductDescription description={data.description} />
         <ProductDetails details={data.details} />

@@ -3,7 +3,7 @@ import Header from "~/components/Header/Header";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-white">
       <Header />
       {children}
       <Footer />
