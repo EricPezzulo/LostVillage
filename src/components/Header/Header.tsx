@@ -16,7 +16,7 @@ const sofia = Sofia_Sans({
 const Header = () => {
   const [showMenu, setShowMenu] = useState<boolean>(false);
   return (
-    <header className="justif relative flex h-14 w-full items-center justify-between bg-white px-5">
+    <header className="justif relative z-30 flex h-14 w-full items-center justify-between bg-white px-5">
       <button
         type="button"
         onClick={() => setShowMenu((prev) => !prev)}

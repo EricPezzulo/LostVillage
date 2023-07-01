@@ -7,12 +7,6 @@ import { api } from "~/utils/api";
 import type { RouterOutputs } from "~/utils/api";
 // import { useUser } from "@clerk/nextjs";
 
-const ptSans = PT_Sans({
-  variable: "--font-PT-sans",
-  subsets: ["latin"],
-  weight: ["400", "700"],
-});
-
 type ReviewWithUser = RouterOutputs["reviews"]["getAll"][number];
 
 const ProductReview = (props: ReviewWithUser) => {
@@ -44,10 +38,10 @@ const ProductReview = (props: ReviewWithUser) => {
 
 const ProductReviews = () => {
   const [showReviews, setShowReviews] = useState<boolean>(false);
-  const [totalStars, setTotalStars] = useState<number>(0);
+  // const [totalStars, setTotalStars] = useState<number>(0);
 
   const handleShowReviews = () => {
-    setShowReviews((prev) => !prev);
+    if (reviews && reviews.length > 0) setShowReviews((prev) => !prev);
   };
 
   const { data: reviews } = api.reviews.getAll.useQuery();
@@ -105,3 +99,9 @@ const ProductReviews = () => {
 };
 
 export default ProductReviews;
+
+const ptSans = PT_Sans({
+  variable: "--font-PT-sans",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});

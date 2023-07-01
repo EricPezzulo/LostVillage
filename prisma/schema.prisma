@@ -49,7 +49,7 @@ model Product {
     description     String
     details         String[]
     imageURLs       String[]
-    variants        String[]
+    variants        Variant[]
     clothingSizes   String[]
     shoeSizes       Int[]
     price           Int 
@@ -68,5 +68,10 @@ model Review {
     @@index([authorId])
 }
 
-
-
+model Variant {
+  id        String      @id @default(cuid())
+  color     String
+  images    String[]
+  product   Product     @relation(fields: [productId], references: [id]) 
+  productId String
+}

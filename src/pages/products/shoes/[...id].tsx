@@ -7,14 +7,17 @@ import ProductReviews from "~/components/ProductComponets/ProductReviews";
 import ProductDescription from "~/components/ProductComponets/ProductDescription";
 import ProductDetails from "~/components/ProductComponets/ProductDetails";
 import SizeGuide from "~/components/ProductComponets/SizeGuide";
-import { api } from "~/utils/api";
 import { ProductImageCarousel } from "~/components/ProductComponets/ProductImageCarousel";
-import ProductScreenLoadingSkeleton from "~/components/Skeletons/ProductScreenLoadingSkeleton";
 import type { GetServerSideProps, NextPage } from "next";
 import Custom404 from "~/pages/404";
 import ProductHeaderInfo from "~/components/ProductComponets/ProductHeaderInfo";
 import { PrismaClient } from "@prisma/client";
+import "swiper/css";
+import NavigateImageSliderButtons from "~/components/elements/NavigateImageSliderButtons";
+import RecommendedProducts from "~/components/ProductComponets/RecommendedProducts";
 
+import { IoCloseOutline } from "react-icons/io5";
+import { AnimatePresence, motion } from "framer-motion";
 interface pageProps {
   productId: string;
   product: {
@@ -26,121 +29,180 @@ interface pageProps {
     description: string;
     details: string[];
     imageURLs: string[];
-    variants: string[];
-    clothingSizes: string[]; // Or you can use a specific type for clothing sizes like 'ClothingSize[]'
-    shoeSizes: number[]; // Or you can use a specific type for shoe sizes like 'ShoeSize[]'
+    variants: {
+      color: string;
+      images: string[];
+    }[];
+    clothingSizes: string[];
+    shoeSizes: number[];
     price: number;
     category: string;
   };
+  error: string;
 }
 
-const Page: NextPage<pageProps> = ({ productId, product }) => {
+const Page: NextPage<pageProps> = ({ product, error }) => {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [showSizeGuide, setShowSizeGuide] = useState<boolean>(false);
+  const [prevEl, setPrevEl] = useState<HTMLElement | null>(null);
+  const [nextEl, setNextEl] = useState<HTMLElement | null>(null);
 
+  const [banner, setBanner] = useState(true);
   const handleClickSizeGuide = () => {
     setShowSizeGuide((prev) => !prev);
   };
 
   console.log(product);
-
-  if (!product) return <Custom404 />;
+  if (error || !product) return <Custom404 />;
 
   return (
-    <div className="relative flex w-full max-w-7xl grow flex-col items-center bg-white sm:justify-center sm:self-center lg:py-5">
-      <div className="flex w-full sm:hidden">
-        <ProductHeaderInfo
-          title={product?.title}
-          category={product?.category}
-          price={product?.price}
-        />
-      </div>
-      <div className="flex w-full max-w-5xl flex-col justify-center  sm:flex-row">
-        <ProductImageCarousel images={product?.imageURLs} />
-        <div className=" sm:pl-5 lg:w-full">
-          <div className="hidden sm:block">
-            <ProductHeaderInfo
-              title={product?.title}
-              category={product?.category}
-              price={product?.price}
+    <div className="relative flex w-full max-w-7xl grow flex-col items-center bg-white sm:justify-center sm:self-center sm:pb-10">
+      <AnimatePresence>
+        {banner && (
+          <motion.div
+            // initial={{ height: 0 }}
+            // animate={{ height: 56 }}
+            // exit={{ height: 0 }}
+            initial={{ height: 56 }}
+            animate={banner ? { height: 56 } : { height: 0 }}
+            exit={{ height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="flex h-14 w-screen items-center justify-center bg-black text-white"
+          >
+            <div className="flex w-full items-end justify-center ">
+              <p
+                className={`${ptSans.variable} font-PT-sans text-xl font-bold`}
+              >
+                CHECK OUT OUR SUMMER DEALS
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setBanner(false)}
+              className="absolute right-2 justify-end pr-5"
+            >
+              <IoCloseOutline className="h-7 w-7 text-white" />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <motion.div
+        // initial={{ marginTop: 0 }}
+        // animate={{ marginTop: banner ? 56 : 0 }}
+        initial={{ marginTop: banner ? 56 : 0 }}
+        animate={{ marginTop: banner ? 56 : 0 }}
+        transition={{ duration: 0.3 }}
+        className="pt-10"
+      >
+        <div className="flex w-full sm:hidden">
+          <ProductHeaderInfo
+            title={product?.title}
+            category={product?.category}
+            price={product?.price}
+          />
+        </div>
+        <div className="flex w-full max-w-5xl flex-col justify-center  sm:flex-row">
+          <ProductImageCarousel images={product?.imageURLs} />
+          <div className=" sm:pl-5 lg:w-full">
+            <div className="hidden sm:block">
+              <ProductHeaderInfo
+                title={product?.title}
+                category={product?.category}
+                price={product?.price}
+              />
+            </div>
+            <div className="w-full p-5 sm:pl-0">
+              <p className={`${ptSans.variable} font-PT-sans`}>
+                {product?.variants?.length} colors available
+              </p>
+              <div className="flex w-full items-start ">
+                {product?.variants?.map((variant, key) => (
+                  <div
+                    key={key}
+                    className="ml-2 flex h-20 w-20 bg-gray-400 first:ml-0 "
+                  >
+                    <img
+                      className="w-full object-cover"
+                      src={variant?.images?.[0]}
+                      alt=""
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <ShoeSizeVariantGrid
+              sizes={product?.shoeSizes}
+              selectedSize={selectedSize}
+              setSelectedSize={setSelectedSize}
             />
-          </div>
-          <div className="w-full p-5 sm:pl-0">
-            <p className={`${ptSans.variable} font-PT-sans`}>
-              {product?.variants?.length} colors available
-            </p>
-            <div className="flex w-full items-start ">
-              {product?.variants?.map((variant, key) => (
-                <div
-                  key={key}
-                  className="ml-2 h-14 w-14 bg-gray-400 first:ml-0 "
-                />
-              ))}
+            <div className="mt-4 hidden  sm:flex">
+              <button
+                className=" flex h-10 w-36 items-center justify-center rounded-full bg-black hover:cursor-pointer sm:inset-0 sm:flex"
+                type="button"
+                disabled={!selectedSize}
+                onClick={() => console.log("button works")}
+              >
+                <p
+                  className={` ${sofia.variable} font-sofia font-semibold text-white`}
+                >
+                  {!selectedSize ? "SELECT SIZE" : "ADD TO CART"}
+                </p>
+              </button>
             </div>
           </div>
-          <ShoeSizeVariantGrid
-            sizes={product?.shoeSizes}
-            selectedSize={selectedSize}
-            setSelectedSize={setSelectedSize}
-          />
-          <div className="mt-4 hidden  sm:flex">
-            <button
-              className=" flex h-10 w-36 items-center justify-center rounded-full bg-black hover:cursor-pointer sm:inset-0 sm:flex "
-              type="button"
-              disabled={!selectedSize}
-              onClick={() => console.log("button works")}
-            >
-              <p
-                className={` ${sofia.variable} font-sofia font-semibold text-white`}
-              >
-                {!selectedSize ? "SELECT SIZE" : "ADD TO CART"}
-              </p>
-            </button>{" "}
-          </div>
         </div>
-      </div>
-      <div className="flex w-full  items-start py-4 pl-4 md:max-w-3xl lg:max-w-5xl">
-        <CiRuler className="h-6 w-6" />
+        <div className="flex w-full  items-start pb-4 pl-4 pt-10 md:max-w-3xl lg:max-w-5xl">
+          <CiRuler className="h-6 w-6" />
+          <button
+            type="button"
+            className={`${ptSans.variable} font-PT-sans font-light`}
+            onClick={handleClickSizeGuide}
+          >
+            Size guide
+          </button>
+        </div>
+
         <button
+          className="m-2 mx-5 flex h-14 w-5/6 items-center justify-center rounded-full bg-black hover:cursor-pointer sm:hidden"
           type="button"
-          className={`${ptSans.variable} font-PT-sans font-light`}
-          onClick={handleClickSizeGuide}
+          disabled={!selectedSize}
+          onClick={() => console.log("button works")}
         >
-          Size guide
+          <p
+            className={` ${sofia.variable} font-sofia font-semibold text-white`}
+          >
+            {!selectedSize ? "SELECT SIZE" : "ADD TO CART"}
+          </p>
         </button>
-      </div>
 
-      <button
-        className="m-2 mx-5 flex h-14 w-5/6 items-center justify-center rounded-full bg-black hover:cursor-pointer sm:hidden"
-        type="button"
-        disabled={!selectedSize}
-        onClick={() => console.log("button works")}
-      >
-        <p className={` ${sofia.variable} font-sofia font-semibold text-white`}>
-          {!selectedSize ? "SELECT SIZE" : "ADD TO CART"}
-        </p>
-      </button>
-
-      <div className="w-full pt-5  md:max-w-3xl lg:max-w-5xl">
-        <ProductReviews />
-        <ProductDescription description={product?.description} />
-        <ProductDetails details={product?.details} />
-      </div>
-      <SizeGuide
-        showSizeGuide={showSizeGuide}
-        handleClickSizeGuide={handleClickSizeGuide}
-      />
-      {/* you might like these products as well */}
-      <div className="w-full">
-        <p>You also might like</p>
-        {/* use swiper to create another horizontal scrolling image carousel */}
-        <div className="flex w-full overflow-scroll overflow-x-scroll p-2">
-          <div className="m-1 h-44  w-44 bg-gray-200" />
-          <div className="h-44 w-44 bg-gray-200" />
-          <div className="h-44 w-44 bg-gray-200" />
-          <div className="h-44 w-44 bg-gray-200" />
+        <div className="w-full pt-5  md:max-w-3xl lg:max-w-5xl">
+          <ProductReviews />
+          <ProductDescription description={product?.description} />
+          <ProductDetails details={product?.details} />
         </div>
-      </div>
+        <SizeGuide
+          showSizeGuide={showSizeGuide}
+          handleClickSizeGuide={handleClickSizeGuide}
+        />
+
+        <div className="w-full max-w-5xl py-5 md:max-w-[768px] lg:max-w-[1024px]">
+          <div className="flex items-center justify-between px-5 md:px-0">
+            <p
+              className={`${sofia.variable} py-1 text-left font-sofia text-xl `}
+            >
+              You also might like
+            </p>
+
+            <div className="hidden sm:flex">
+              <NavigateImageSliderButtons
+                setPrevEl={setPrevEl}
+                setNextEl={setNextEl}
+              />
+            </div>
+          </div>
+          <RecommendedProducts prevEl={prevEl} nextEl={nextEl} />
+        </div>
+      </motion.div>
     </div>
   );
 };
@@ -149,15 +211,16 @@ export default Page;
 
 const prisma = new PrismaClient();
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { query } = context;
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const productId = query.id?.[0];
   const product = await prisma.product.findUnique({
     where: {
       productId,
     },
+    include: { variants: true },
   });
 
+  if (!product) return { props: { error: true } };
   const serializedProduct = {
     ...product,
     createdAt: product?.createdAt.toISOString(),
@@ -166,7 +229,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
-      productId,
       product: serializedProduct,
     },
   };

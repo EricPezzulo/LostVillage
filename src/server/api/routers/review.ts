@@ -14,7 +14,6 @@ export const reviewsRouter = createTRPCRouter({
       })
     ).map(filterUserForClient);
 
-    console.log(users);
     return reviews.map((review) => {
       const author = users.find((user) => user.id === review.authorId);
       if (!author)
