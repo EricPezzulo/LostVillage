@@ -18,6 +18,7 @@ import RecommendedProducts from "~/components/ProductComponets/RecommendedProduc
 
 import { IoCloseOutline } from "react-icons/io5";
 import { AnimatePresence, motion } from "framer-motion";
+import classNames from "classnames";
 interface pageProps {
   productId: string;
   product: {
@@ -60,9 +61,6 @@ const Page: NextPage<pageProps> = ({ product, error }) => {
       <AnimatePresence>
         {banner && (
           <motion.div
-            // initial={{ height: 0 }}
-            // animate={{ height: 56 }}
-            // exit={{ height: 0 }}
             initial={{ height: 56 }}
             animate={banner ? { height: 56 } : { height: 0 }}
             exit={{ height: 0 }}
@@ -87,12 +85,10 @@ const Page: NextPage<pageProps> = ({ product, error }) => {
         )}
       </AnimatePresence>
       <motion.div
-        // initial={{ marginTop: 0 }}
-        // animate={{ marginTop: banner ? 56 : 0 }}
-        initial={{ marginTop: banner ? 56 : 0 }}
-        animate={{ marginTop: banner ? 56 : 0 }}
+        initial={{ marginTop: banner ? 30 : 0 }}
+        animate={{ marginTop: banner ? 30 : 0 }}
         transition={{ duration: 0.3 }}
-        className="pt-10"
+        className="flex w-full flex-col items-center justify-center sm:pt-10"
       >
         <div className="flex w-full sm:hidden">
           <ProductHeaderInfo
@@ -101,9 +97,10 @@ const Page: NextPage<pageProps> = ({ product, error }) => {
             price={product?.price}
           />
         </div>
-        <div className="flex w-full max-w-5xl flex-col justify-center  sm:flex-row">
+        <div className="flex w-full max-w-5xl flex-col justify-center sm:flex-row">
           <ProductImageCarousel images={product?.imageURLs} />
-          <div className=" sm:pl-5 lg:w-full">
+
+          <div className="sm:pl-5 lg:ml-10 lg:w-full ">
             <div className="hidden sm:block">
               <ProductHeaderInfo
                 title={product?.title}
@@ -161,7 +158,6 @@ const Page: NextPage<pageProps> = ({ product, error }) => {
             Size guide
           </button>
         </div>
-
         <button
           className="m-2 mx-5 flex h-14 w-5/6 items-center justify-center rounded-full bg-black hover:cursor-pointer sm:hidden"
           type="button"
@@ -174,7 +170,6 @@ const Page: NextPage<pageProps> = ({ product, error }) => {
             {!selectedSize ? "SELECT SIZE" : "ADD TO CART"}
           </p>
         </button>
-
         <div className="w-full pt-5  md:max-w-3xl lg:max-w-5xl">
           <ProductReviews />
           <ProductDescription description={product?.description} />
@@ -184,7 +179,6 @@ const Page: NextPage<pageProps> = ({ product, error }) => {
           showSizeGuide={showSizeGuide}
           handleClickSizeGuide={handleClickSizeGuide}
         />
-
         <div className="w-full max-w-5xl py-5 md:max-w-[768px] lg:max-w-[1024px]">
           <div className="flex items-center justify-between px-5 md:px-0">
             <p
@@ -192,7 +186,6 @@ const Page: NextPage<pageProps> = ({ product, error }) => {
             >
               You also might like
             </p>
-
             <div className="hidden sm:flex">
               <NavigateImageSliderButtons
                 setPrevEl={setPrevEl}

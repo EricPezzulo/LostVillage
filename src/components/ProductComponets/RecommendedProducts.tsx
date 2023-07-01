@@ -11,7 +11,7 @@ interface ElementProps {
 const RecommendedProducts: FC<ElementProps> = ({ prevEl, nextEl }) => {
   const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   return (
-    <div className="flex w-full">
+    <div className="w-screen sm:w-full">
       <Swiper
         navigation={{ prevEl, nextEl }}
         modules={[Navigation, Pagination]}

@@ -9,7 +9,7 @@ interface ImagesProps {
 
 export const ProductImageCarousel: FC<ImagesProps> = ({ images }) => {
   return (
-    <div className="w-full sm:w-96">
+    <div className="flex w-screen sm:w-96 ">
       <Swiper
         spaceBetween={50}
         slidesPerView={1}
