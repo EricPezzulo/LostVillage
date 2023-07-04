@@ -1,5 +1,6 @@
 import type { FC } from "react";
 import ProductCard from "./ProductCard";
+import { api } from "~/utils/api";
 
 interface ProductsProps {
   products: Product[];
@@ -14,6 +15,7 @@ interface Product {
   price: number;
   productId: string;
   shoeSizes?: number[] | undefined;
+  subCategory: string;
   title: string | null;
   updatedAt: Date;
   variants: Variants[];
@@ -26,7 +28,6 @@ interface Variants {
 }
 
 const ProductResults: FC<ProductsProps> = ({ products }) => {
-  console.log(products);
   return (
     <div
       id="featured-products-section"
@@ -36,9 +37,10 @@ const ProductResults: FC<ProductsProps> = ({ products }) => {
         <ProductCard
           key={`${key}-${product.title || "unknown"}`}
           title={product?.title || "Unknown"}
-          category={product?.category}
+          subCategory={product?.subCategory}
           variants={product.variants}
           price={product?.price}
+          productId={product?.productId}
         />
       ))}
     </div>

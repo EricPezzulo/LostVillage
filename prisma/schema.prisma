@@ -23,8 +23,9 @@ model Product {
     variants        Variant[]
     clothingSizes   String[]
     shoeSizes       Int[]
-    price           Int 
+    price           Float 
     category        String
+    subCategory     String      
 }
 
 model Review {

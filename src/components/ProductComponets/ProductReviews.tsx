@@ -58,7 +58,7 @@ const ProductReviews: FC<ProductReviews> = ({ productId }) => {
     productId: productId,
   });
 
-  console.log(reviews);
+  // console.log(reviews);
   const handleShowReviews = () => {
     if (reviews && reviews?.length > 0) setShowReviews((prev) => !prev);
   };

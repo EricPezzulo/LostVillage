@@ -5,17 +5,21 @@ import ProductResults from "~/components/ProductResults";
 import { api } from "~/utils/api";
 import type { GetServerSideProps } from "next";
 import type { ParsedUrlQuery } from "querystring";
+import Custom404 from "../404";
 
 const Page = ({ query }: { query: ParsedUrlQuery }) => {
-  const { data } = api.products.getAllMensProducts.useQuery();
-  console.log(query);
-  if (!data) return <div>something went wrong</div>;
-  const { products } = data;
+  const { category } = query;
+  const { data: products } = api.products.getProductsByQueryParams.useQuery({
+    category: typeof category === "string" ? category : "allCategories",
+  });
+
+  if (!products) return <div className="flex grow flex-col">Loading...</div>;
+  if (products?.length === 0) return <Custom404 />;
   return (
-    <div>
+    <div className="flex grow flex-col">
       <div className="flex items-center justify-between p-5">
         <h4 className={`${sofia.variable} font-semi-bold font-sofia text-xl`}>
-          Men&apos;s Clothing
+          Product Result&apos;s
         </h4>
         <div className="flex items-center ">
           <BiSort className="mr-2 h-5 w-5" />
@@ -25,7 +29,6 @@ const Page = ({ query }: { query: ParsedUrlQuery }) => {
       <div
         className={`${ptSans.variable} flex w-full flex-col items-center px-5 font-PT-sans`}
       >
-        <p className="pb-3">Search though our summer styles</p>
         <div>
           <ProductResults products={products} />
         </div>

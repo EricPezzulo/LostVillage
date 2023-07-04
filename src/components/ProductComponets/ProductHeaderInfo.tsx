@@ -3,11 +3,15 @@ import React from "react";
 
 interface DataProps {
   title: string | null;
-  category: string;
+  subCategory: string;
   price: number;
 }
 
-const ProductHeaderInfo: React.FC<DataProps> = ({ title, category, price }) => {
+const ProductHeaderInfo: React.FC<DataProps> = ({
+  title,
+  subCategory,
+  price,
+}) => {
   return (
     <div className="flex w-full flex-col sm:whitespace-nowrap">
       <div
@@ -19,7 +23,7 @@ const ProductHeaderInfo: React.FC<DataProps> = ({ title, category, price }) => {
           >
             {title}
           </h3>
-          <p className="font-semibold text-gray-600">{category}</p>
+          <p className="font-semibold text-gray-600">{subCategory}</p>
         </div>
         <p className="pb-2 font-semibold">${price}</p>
       </div>

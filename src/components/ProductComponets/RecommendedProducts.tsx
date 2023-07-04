@@ -1,15 +1,30 @@
 /* eslint-disable @next/next/no-img-element */
+import Link from "next/link";
 import type { FC } from "react";
 import { Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { api } from "~/utils/api";
 
+interface Variant {
+  id: string;
+  color: string;
+  images: string[];
+  productId: string;
+}
 interface ElementProps {
   prevEl: HTMLElement | null;
   nextEl: HTMLElement | null;
+  setVarSelected: React.Dispatch<React.SetStateAction<Variant[] | null>>;
 }
 
-const RecommendedProducts: FC<ElementProps> = ({ prevEl, nextEl }) => {
-  const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const RecommendedProducts: FC<ElementProps> = ({
+  prevEl,
+  nextEl,
+  setVarSelected,
+}) => {
+  const { data } = api.products.getAll.useQuery();
+
+  if (!data?.products) return <div>loading</div>;
   return (
     <div className="w-screen sm:w-full">
       <Swiper
@@ -36,12 +51,21 @@ const RecommendedProducts: FC<ElementProps> = ({ prevEl, nextEl }) => {
           },
         }}
       >
-        {arr.map((elem, key) => (
+        {data?.products?.map((elem, key) => (
           <SwiperSlide key={key}>
-            <img
-              src="https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/2fd8d57f-23c4-418e-9876-1eb1458e31d7/air-vapormax-2021-flyknit-mens-shoes-NpTfFz.png"
-              alt=""
-            />
+            <Link
+              onClick={() =>
+                setVarSelected(
+                  elem?.variants?.[0]?.images?.[0] ? [elem.variants[0]] : null
+                )
+              }
+              href={`/products/${elem.productId}`}
+            >
+              <img
+                src={elem?.variants?.[0]?.images?.[0]}
+                alt={elem?.title || "unknown"}
+              />
+            </Link>
           </SwiperSlide>
         ))}
       </Swiper>

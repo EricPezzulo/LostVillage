@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { PT_Sans, Sofia_Sans } from "next/font/google";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CiRuler } from "react-icons/ci";
 import ShoeSizeVariantGrid from "~/components/ShoeSizeVariantGrid";
 import ProductReviews from "~/components/ProductComponets/ProductReviews";
@@ -37,6 +37,7 @@ interface pageProps {
     shoeSizes: number[];
     price: number;
     category: string;
+    subCategory: string;
   };
   error: string;
 }
@@ -61,9 +62,12 @@ const Page: NextPage<pageProps> = ({ product, error }) => {
   const handleClickSizeGuide = () => {
     setShowSizeGuide((prev) => !prev);
   };
-
   const colorVar = product?.variants[0];
-  if (colorVar && !varSelected) setVarSelected([colorVar]);
+
+  useEffect(() => {
+    if (colorVar && !varSelected) setVarSelected([colorVar]);
+  }, [setVarSelected, varSelected, colorVar]);
+  console.log(varSelected);
   if (error || !product) return <Custom404 />;
 
   return (
@@ -103,7 +107,7 @@ const Page: NextPage<pageProps> = ({ product, error }) => {
         <div className="flex w-full sm:hidden">
           <ProductHeaderInfo
             title={product?.title}
-            category={product?.category}
+            subCategory={product?.subCategory}
             price={product?.price}
           />
         </div>
@@ -119,7 +123,7 @@ const Page: NextPage<pageProps> = ({ product, error }) => {
             <div className="hidden sm:block">
               <ProductHeaderInfo
                 title={product?.title}
-                category={product?.category}
+                subCategory={product?.subCategory}
                 price={product?.price}
               />
             </div>
@@ -228,7 +232,11 @@ const Page: NextPage<pageProps> = ({ product, error }) => {
               />
             </div>
           </div>
-          <RecommendedProducts prevEl={prevEl} nextEl={nextEl} />
+          <RecommendedProducts
+            setVarSelected={setVarSelected}
+            prevEl={prevEl}
+            nextEl={nextEl}
+          />
         </div>
       </motion.div>
     </div>

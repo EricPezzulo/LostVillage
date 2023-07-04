@@ -1,7 +1,6 @@
 "use client";
 import { productData } from "productData";
 import FeaturedProductCard from "./FeaturedProductCard";
-import { FaLongArrowAltRight } from "react-icons/fa";
 import classNames from "classnames";
 import { useState } from "react";
 import { PT_Sans, Sofia_Sans } from "next/font/google";

@@ -40,6 +40,8 @@ export const ProductImageCarousel: FC<ImagesProps> = ({
     setCurrentImage(images && images.length > 0 ? images[0] : undefined);
   }, [images]);
 
+  console.log(images);
+
   return (
     <div className="h-full w-screen sm:w-96">
       <div className="h-full w-full sm:hidden">
