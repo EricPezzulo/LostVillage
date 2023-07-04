@@ -19,6 +19,8 @@ import RecommendedProducts from "~/components/ProductComponets/RecommendedProduc
 import { IoCloseOutline } from "react-icons/io5";
 import { AnimatePresence, motion } from "framer-motion";
 import classNames from "classnames";
+import ClothingSizeVariantGrid from "~/components/ClothingSizeVariantGrid";
+
 interface pageProps {
   productId: string;
   product: {
@@ -30,16 +32,19 @@ interface pageProps {
     description: string;
     details: string[];
     imageURLs: string[];
-    variants: {
-      color: string;
-      images: string[];
-    }[];
+    variants: Variant[];
     clothingSizes: string[];
     shoeSizes: number[];
     price: number;
     category: string;
   };
   error: string;
+}
+interface Variant {
+  id: string;
+  color: string;
+  images: string[];
+  productId: string;
 }
 
 const Page: NextPage<pageProps> = ({ product, error }) => {
@@ -48,12 +53,17 @@ const Page: NextPage<pageProps> = ({ product, error }) => {
   const [prevEl, setPrevEl] = useState<HTMLElement | null>(null);
   const [nextEl, setNextEl] = useState<HTMLElement | null>(null);
 
+  const [prevImageEl, setPrevImageEl] = useState<HTMLElement | null>(null);
+  const [nextImageEl, setNextImageEl] = useState<HTMLElement | null>(null);
+
+  const [varSelected, setVarSelected] = useState<Variant[] | null>(null);
   const [banner, setBanner] = useState(true);
   const handleClickSizeGuide = () => {
     setShowSizeGuide((prev) => !prev);
   };
 
-  console.log(product);
+  const colorVar = product.variants[0];
+  if (colorVar && !varSelected) setVarSelected([colorVar]);
   if (error || !product) return <Custom404 />;
 
   return (
@@ -98,8 +108,13 @@ const Page: NextPage<pageProps> = ({ product, error }) => {
           />
         </div>
         <div className="flex w-full max-w-5xl flex-col justify-center sm:flex-row">
-          <ProductImageCarousel images={product?.imageURLs} />
-
+          <ProductImageCarousel
+            prevImageEl={prevImageEl}
+            nextImageEl={nextImageEl}
+            setPrevImageEl={setPrevImageEl}
+            setNextImageEl={setNextImageEl}
+            images={varSelected?.[0]?.images}
+          />
           <div className="sm:pl-5 lg:ml-10 lg:w-full ">
             <div className="hidden sm:block">
               <ProductHeaderInfo
@@ -110,34 +125,54 @@ const Page: NextPage<pageProps> = ({ product, error }) => {
             </div>
             <div className="w-full p-5 sm:pl-0">
               <p className={`${ptSans.variable} font-PT-sans`}>
-                {product?.variants?.length} colors available
+                {product?.variants?.length} variants available
+              </p>
+              <p className={`${ptSans.variable} font-PT-sans`}>
+                {varSelected?.[0]?.color}
               </p>
               <div className="flex w-full items-start ">
                 {product?.variants?.map((variant, key) => (
-                  <div
+                  <button
+                    type="button"
+                    onClick={() => setVarSelected([variant])}
                     key={key}
-                    className="ml-2 flex h-20 w-20 bg-gray-400 first:ml-0 "
+                    className={classNames(
+                      varSelected?.[0] === variant
+                        ? "border-2 border-sky-400"
+                        : null,
+                      "ml-2 flex h-20 w-20 bg-gray-400 first:ml-0 "
+                    )}
                   >
                     <img
-                      className="w-full object-cover"
+                      className="h-full min-w-full max-w-full object-cover"
                       src={variant?.images?.[0]}
                       alt=""
                     />
-                  </div>
+                  </button>
                 ))}
               </div>
             </div>
-            <ShoeSizeVariantGrid
-              sizes={product?.shoeSizes}
-              selectedSize={selectedSize}
-              setSelectedSize={setSelectedSize}
-            />
+            {product.shoeSizes.length > 0 && (
+              <ShoeSizeVariantGrid
+                sizes={product?.shoeSizes}
+                selectedSize={selectedSize}
+                setSelectedSize={setSelectedSize}
+              />
+            )}
+            {product.clothingSizes.length > 0 && (
+              <ClothingSizeVariantGrid
+                sizes={product?.clothingSizes}
+                selectedSize={selectedSize}
+                setSelectedSize={setSelectedSize}
+              />
+            )}
+
             <div className="mt-4 hidden  sm:flex">
               <button
                 className=" flex h-10 w-36 items-center justify-center rounded-full bg-black hover:cursor-pointer sm:inset-0 sm:flex"
                 type="button"
                 disabled={!selectedSize}
-                onClick={() => console.log("button works")}
+                // onClick={() => console.log("button works")}
               >
                 <p
                   className={` ${sofia.variable} font-sofia font-semibold text-white`}
@@ -162,7 +197,7 @@ const Page: NextPage<pageProps> = ({ product, error }) => {
           className="m-2 mx-5 flex h-14 w-5/6 items-center justify-center rounded-full bg-black hover:cursor-pointer sm:hidden"
           type="button"
           disabled={!selectedSize}
-          onClick={() => console.log("button works")}
+          // onClick={() => console.log("button works")}
         >
           <p
             className={` ${sofia.variable} font-sofia font-semibold text-white`}
@@ -171,7 +206,7 @@ const Page: NextPage<pageProps> = ({ product, error }) => {
           </p>
         </button>
         <div className="w-full pt-5  md:max-w-3xl lg:max-w-5xl">
-          <ProductReviews />
+          <ProductReviews productId={product?.productId} />
           <ProductDescription description={product?.description} />
           <ProductDetails details={product?.details} />
         </div>

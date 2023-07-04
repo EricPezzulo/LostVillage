@@ -18,6 +18,9 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  images: {
+    domains: ["static.nike.com", "localhost"],
+  },
 };
 
 export default config;

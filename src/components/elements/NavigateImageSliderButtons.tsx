@@ -10,8 +10,8 @@ const NavigateImageSliderButtons: React.FC<ElementStateProps> = ({
   setNextEl,
 }) => {
   return (
-    <div>
-      <button ref={(node) => setPrevEl(node)} type="button">
+    <div className="flex">
+      <button className="mr-1" ref={(node) => setPrevEl(node)} type="button">
         <MdOutlineNavigateBefore className="h-8 w-8 bg-black text-white" />
       </button>{" "}
       <button ref={(node) => setNextEl(node)} type="button">

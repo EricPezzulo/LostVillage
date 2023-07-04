@@ -1,23 +1,34 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { PT_Sans } from "next/font/google";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { BiChevronDown } from "react-icons/bi";
 import StarRating from "./StarRating";
 import { api } from "~/utils/api";
 import type { RouterOutputs } from "~/utils/api";
-// import { useUser } from "@clerk/nextjs";
+import type { FC } from "react";
 
-type ReviewWithUser = RouterOutputs["reviews"]["getAll"][number];
+// type ReviewWithUser = RouterOutputs["reviews"]["getReviewsByProductId"][number];
 
-const ProductReview = (props: ReviewWithUser) => {
-  const { review, author } = props;
-  console.log(props);
+interface ReviewProps {
+  review: {
+    id: string;
+    authorId: string;
+    productReviewId: string;
+    createdAt: Date;
+    content: string;
+    title: string | null;
+    starCount: number;
+  };
+}
+
+const ProductReview: FC<ReviewProps> = ({ review }) => {
+  console.log(review);
   // if (reviewsIsLoading) return <div>Loading...</div>;
-  if (!review) return <div>Something went wrong</div>;
+  // if (!review) return <div>Something went wrong</div>;
 
   return (
     <div
-      key={review.id}
+      key={review?.id}
       className={`${ptSans.variable} flex flex-col border-t px-5  py-4 text-left font-PT-sans`}
     >
       <StarRating
@@ -25,26 +36,32 @@ const ProductReview = (props: ReviewWithUser) => {
         totalStars={review?.starCount}
         rating={5}
       />
-      <p className="font-semibold">{review.title}</p>
-      <p>{review.content}</p>
+      <p className="font-semibold">{review?.title}</p>
+      <p>{review?.content}</p>
       <div className="pt-3">
         <p className="text-sm text-gray-500">
-          {author.username} | {review?.createdAt.toDateString()}
+          {review?.authorId} | {review?.createdAt?.toLocaleDateString()}
         </p>
       </div>
     </div>
   );
 };
 
-const ProductReviews = () => {
+interface ProductReviews {
+  productId: string;
+}
+
+const ProductReviews: FC<ProductReviews> = ({ productId }) => {
   const [showReviews, setShowReviews] = useState<boolean>(false);
   // const [totalStars, setTotalStars] = useState<number>(0);
+  const { data: reviews } = api.reviews.getReviewsByProductId.useQuery({
+    productId: productId,
+  });
 
+  console.log(reviews);
   const handleShowReviews = () => {
-    if (reviews && reviews.length > 0) setShowReviews((prev) => !prev);
+    if (reviews && reviews?.length > 0) setShowReviews((prev) => !prev);
   };
-
-  const { data: reviews } = api.reviews.getAll.useQuery();
 
   //add variable star numbers. will have to change prisma schema to store avgRating
   //and after every rating is pushed to db, a function will have to recalutate the avg Rating
@@ -58,7 +75,7 @@ const ProductReviews = () => {
       >
         <div className="flex items-center pl-5">
           <h4 className={`${ptSans.variable} font-PT-sans font-semibold`}>
-            Reviews ({reviews?.length})
+            Reviews ({reviews?.length || 0})
           </h4>
         </div>
 
@@ -88,7 +105,7 @@ const ProductReviews = () => {
           >
             <div>
               {reviews?.map((review, key) => (
-                <ProductReview {...review} key={key} />
+                <ProductReview review={review} key={key} />
               ))}
             </div>
           </motion.div>

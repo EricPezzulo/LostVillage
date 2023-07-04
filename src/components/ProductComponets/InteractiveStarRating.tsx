@@ -12,7 +12,7 @@ const InteractiveStarRating: React.FC<InteractiveStarRatingProps> = ({
 
   const handleStarClick = (selectedRating: number) => {
     setRating(selectedRating);
-    console.log(selectedRating);
+    // console.log(selectedRating);
   };
 
   return (

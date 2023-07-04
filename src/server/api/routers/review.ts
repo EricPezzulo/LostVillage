@@ -27,6 +27,29 @@ export const reviewsRouter = createTRPCRouter({
       };
     });
   }),
+  getReviewsByProductId: publicProcedure
+    .input(z.object({ productId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const reviews = await ctx.prisma.review.findMany({
+        where: {
+          productReviewId: input.productId,
+        },
+      });
+
+      return reviews;
+    }),
+
+  getReviewById: publicProcedure
+    .input(z.object({ productId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const reviews = await ctx.prisma.review.findUnique({
+        where: {
+          id: input.productId,
+        },
+      });
+
+      return reviews;
+    }),
 });
 
 const filterUserForClient = (user: User) => {

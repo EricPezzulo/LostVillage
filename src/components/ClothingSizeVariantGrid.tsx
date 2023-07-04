@@ -1,16 +1,15 @@
-import React from "react";
-import ShoeSizeVariant from "./ShoeSizeVariant";
 import { PT_Sans } from "next/font/google";
+import { FC } from "react";
+import ClothingSizeVariant from "./ClothingSizeVariant";
 
-interface ShoeSizeVariantGirdProps {
+interface ClothingSizeVariantGirdProps {
   selectedSize?: string | null;
-  sizes: number[];
+  sizes: string[];
   setSelectedSize: React.Dispatch<React.SetStateAction<string | null>>;
 }
-
-const ShoeSizeVariantGrid: React.FC<ShoeSizeVariantGirdProps> = ({
-  selectedSize,
+const ClothingSizeVariantGrid: FC<ClothingSizeVariantGirdProps> = ({
   setSelectedSize,
+  selectedSize,
   sizes,
 }) => {
   return (
@@ -19,12 +18,11 @@ const ShoeSizeVariantGrid: React.FC<ShoeSizeVariantGirdProps> = ({
         <p className="text-lg font-semibold">Sizes</p>
         <div className="grid w-full grid-cols-3 gap-2  sm:grid-cols-2 md:grid-cols-3">
           {sizes.map((size, key) => (
-            <ShoeSizeVariant
+            <ClothingSizeVariant
+              size={size}
               key={key}
               setSelectedSize={setSelectedSize}
               selectedSize={selectedSize}
-              men={size}
-              women={size + 1.5}
             />
           ))}
         </div>
@@ -33,7 +31,7 @@ const ShoeSizeVariantGrid: React.FC<ShoeSizeVariantGirdProps> = ({
   );
 };
 
-export default ShoeSizeVariantGrid;
+export default ClothingSizeVariantGrid;
 
 const ptSans = PT_Sans({
   variable: "--font-sans",
