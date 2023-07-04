@@ -1,5 +1,4 @@
 import type { FC } from "react";
-
 import ProductCard from "./ProductCard";
 
 interface ProductsProps {
@@ -15,11 +14,10 @@ interface Product {
   price: number;
   productId: string;
   shoeSizes?: number[] | undefined;
-  title: string;
+  title: string | null;
   updatedAt: Date;
   variants: Variants[];
 }
-
 interface Variants {
   id: string;
   productId: string;
@@ -36,8 +34,8 @@ const ProductResults: FC<ProductsProps> = ({ products }) => {
     >
       {products?.map((product, key) => (
         <ProductCard
-          key={`${key}-${product.title}`}
-          title={product?.title}
+          key={`${key}-${product.title || "unknown"}`}
+          title={product?.title || "Unknown"}
           category={product?.category}
           variants={product.variants}
           price={product?.price}

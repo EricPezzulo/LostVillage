@@ -4,12 +4,9 @@ import { PT_Sans, Sofia_Sans } from "next/font/google";
 import ProductResults from "~/components/ProductResults";
 import { api } from "~/utils/api";
 import type { GetServerSideProps } from "next";
+import type { ParsedUrlQuery } from "querystring";
 
-// interface PageProps {
-//   query:
-// }
-
-const Page = ({ query }) => {
+const Page = ({ query }: { query: ParsedUrlQuery }) => {
   const { data } = api.products.getAllMensProducts.useQuery();
   console.log(query);
   if (!data) return <div>something went wrong</div>;
@@ -39,13 +36,14 @@ const Page = ({ query }) => {
 
 export default Page;
 
-export const getServerSideProps: GetServerSideProps = ({ query }) => {
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   return Promise.resolve({
     props: {
       query,
     },
   });
 };
+
 const ptSans = PT_Sans({
   subsets: ["latin"],
   weight: ["400", "700"],
