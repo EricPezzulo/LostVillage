@@ -1,15 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 interface ProductCardProps {
-  images: { id?: number; url?: string }[];
   title: string;
   category: string;
-  variants: string;
-  price: string;
+  variants: Variants[];
+  price: number;
 }
-
+interface Variants {
+  id: string;
+  productId: string;
+  color: string;
+  images: string[];
+}
 const ProductCard: React.FC<ProductCardProps> = ({
-  images,
   title,
   category,
   variants,
@@ -18,11 +21,15 @@ const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <div className="mx-1 h-full w-full rounded p-2 sm:max-w-[250px]">
       <div className="flex flex-col">
-        <img className="object-cover" src={images[0]?.url} alt={title} />
+        <img
+          className="object-cover"
+          src={variants?.[0]?.images?.[0]}
+          alt={title}
+        />
         <p className="pt-1 text-base">{title}</p>
         <p className="text-sm text-gray-600">{category}</p>
-        <p className="text-sm text-gray-600">{variants}</p>
-        <p className="text-sm">{price}</p>
+        {/* <p className="text-sm text-gray-600">{variants}</p> */}
+        <p className="text-sm">${price}</p>
       </div>
     </div>
   );

@@ -62,7 +62,7 @@ const Page: NextPage<pageProps> = ({ product, error }) => {
     setShowSizeGuide((prev) => !prev);
   };
 
-  const colorVar = product.variants[0];
+  const colorVar = product?.variants[0];
   if (colorVar && !varSelected) setVarSelected([colorVar]);
   if (error || !product) return <Custom404 />;
 

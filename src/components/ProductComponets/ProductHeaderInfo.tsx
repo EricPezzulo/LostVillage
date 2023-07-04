@@ -14,7 +14,9 @@ const ProductHeaderInfo: React.FC<DataProps> = ({ title, category, price }) => {
         className={`${ptSans.variable} flex w-full flex-col items-start pl-5 font-PT-sans sm:pl-0`}
       >
         <div className="py-2">
-          <h3 className={`font-PT-sans text-xl font-semibold sm:text-2xl`}>
+          <h3
+            className={`whitespace-normal font-PT-sans text-xl font-semibold sm:text-2xl`}
+          >
             {title}
           </h3>
           <p className="font-semibold text-gray-600">{category}</p>

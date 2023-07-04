@@ -2,20 +2,18 @@ import { BsFilter } from "react-icons/bs";
 import { BiSort } from "react-icons/bi";
 import { PT_Sans, Sofia_Sans } from "next/font/google";
 import ProductResults from "~/components/ProductResults";
+import { api } from "~/utils/api";
+import type { GetServerSideProps } from "next";
 
-const ptSans = PT_Sans({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-pt-sans",
-});
+// interface PageProps {
+//   query:
+// }
 
-const sofia = Sofia_Sans({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-sofia",
-});
-
-const Page = () => {
+const Page = ({ query }) => {
+  const { data } = api.products.getAllMensProducts.useQuery();
+  console.log(query);
+  if (!data) return <div>something went wrong</div>;
+  const { products } = data;
   return (
     <div>
       <div className="flex items-center justify-between p-5">
@@ -28,11 +26,11 @@ const Page = () => {
         </div>
       </div>
       <div
-        className={`${ptSans.variable} font-PT-sans flex w-full flex-col items-center px-5`}
+        className={`${ptSans.variable} flex w-full flex-col items-center px-5 font-PT-sans`}
       >
         <p className="pb-3">Search though our summer styles</p>
         <div>
-          <ProductResults />
+          <ProductResults products={products} />
         </div>
       </div>
     </div>
@@ -40,3 +38,22 @@ const Page = () => {
 };
 
 export default Page;
+
+export const getServerSideProps: GetServerSideProps = ({ query }) => {
+  return Promise.resolve({
+    props: {
+      query,
+    },
+  });
+};
+const ptSans = PT_Sans({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-pt-sans",
+});
+
+const sofia = Sofia_Sans({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-sofia",
+});

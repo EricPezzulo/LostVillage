@@ -18,4 +18,15 @@ export const productsRouter = createTRPCRouter({
 
       return product;
     }),
+
+  getAllMensProducts: publicProcedure.query(async ({ ctx }) => {
+    const products = await ctx.prisma.product.findMany({
+      take: 100,
+      include: { variants: true },
+    });
+    const filterForMens = products.filter((product) =>
+      product.category.includes("Men")
+    );
+    return { products: filterForMens };
+  }),
 });
