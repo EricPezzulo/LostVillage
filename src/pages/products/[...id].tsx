@@ -58,7 +58,6 @@ const Page: NextPage<pageProps> = ({ product, error }) => {
   const [nextImageEl, setNextImageEl] = useState<HTMLElement | null>(null);
 
   const [varSelected, setVarSelected] = useState<Variant[] | null>(null);
-  const [banner, setBanner] = useState(true);
   const handleClickSizeGuide = () => {
     setShowSizeGuide((prev) => !prev);
   };
@@ -71,39 +70,8 @@ const Page: NextPage<pageProps> = ({ product, error }) => {
   if (error || !product) return <Custom404 />;
 
   return (
-    <div className="relative flex w-full max-w-7xl grow flex-col items-center bg-white sm:justify-center sm:self-center sm:pb-10">
-      <AnimatePresence>
-        {banner && (
-          <motion.div
-            initial={{ height: 56 }}
-            animate={banner ? { height: 56 } : { height: 0 }}
-            exit={{ height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="flex h-14 w-screen items-center justify-center bg-black text-white"
-          >
-            <div className="flex w-full items-end justify-center ">
-              <p
-                className={`${ptSans.variable} font-PT-sans text-xl font-bold`}
-              >
-                CHECK OUT OUR SUMMER DEALS
-              </p>
-            </div>
-            <button
-              type="button"
-              onClick={() => setBanner(false)}
-              className="absolute right-2 justify-end pr-5"
-            >
-              <IoCloseOutline className="h-7 w-7 text-white" />
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-      <motion.div
-        initial={{ marginTop: banner ? 30 : 0 }}
-        animate={{ marginTop: banner ? 30 : 0 }}
-        transition={{ duration: 0.3 }}
-        className="flex w-full flex-col items-center justify-center sm:pt-10"
-      >
+    <div className="relative flex w-full max-w-7xl grow flex-col items-center bg-white sm:justify-center sm:self-center sm:py-10">
+      <div>
         <div className="flex w-full sm:hidden">
           <ProductHeaderInfo
             title={product?.title}
@@ -181,7 +149,7 @@ const Page: NextPage<pageProps> = ({ product, error }) => {
                 <p
                   className={` ${sofia.variable} font-sofia font-semibold text-white`}
                 >
-                  {!selectedSize ? "SELECT SIZE" : "ADD TO CART"}
+                  {!selectedSize ? "SELECT SIZE" : "ADD TO BAG"}
                 </p>
               </button>
             </div>
@@ -206,10 +174,10 @@ const Page: NextPage<pageProps> = ({ product, error }) => {
           <p
             className={` ${sofia.variable} font-sofia font-semibold text-white`}
           >
-            {!selectedSize ? "SELECT SIZE" : "ADD TO CART"}
+            {!selectedSize ? "SELECT SIZE" : "ADD TO BAG"}
           </p>
         </button>
-        <div className="w-full pt-5  md:max-w-3xl lg:max-w-5xl">
+        <div className="w-full pt-5 md:max-w-3xl lg:max-w-5xl">
           <ProductReviews productId={product?.productId} />
           <ProductDescription description={product?.description} />
           <ProductDetails details={product?.details} />
@@ -238,7 +206,8 @@ const Page: NextPage<pageProps> = ({ product, error }) => {
             nextEl={nextEl}
           />
         </div>
-      </motion.div>
+      </div>
+      {/* </motion.div> */}
     </div>
   );
 };

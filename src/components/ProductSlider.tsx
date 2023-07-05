@@ -1,27 +1,14 @@
-"use client";
 import { productData } from "productData";
 import FeaturedProductCard from "./FeaturedProductCard";
 import classNames from "classnames";
 import { useState } from "react";
 import { PT_Sans, Sofia_Sans } from "next/font/google";
 
-const ptSans = PT_Sans({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-pt-sans",
-});
-const sofia = Sofia_Sans({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-sofia",
-});
-
 const ProductSlider = () => {
   const [selectedTitle, setSelectedTitle] = useState<string>("New Arrivals");
   return (
     <div className="py-4">
       <div className="flex w-full items-center ">
-        {/* <FaLongArrowAltRight className="ml-3" /> */}
         <div className="relative flex w-full items-center">
           <div
             className={`${sofia.variable} scroll flex h-full w-full overflow-x-scroll scroll-smooth whitespace-nowrap font-sofia  scrollbar-hide`}
@@ -86,3 +73,14 @@ const ProductSlider = () => {
 };
 
 export default ProductSlider;
+
+const ptSans = PT_Sans({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-pt-sans",
+});
+const sofia = Sofia_Sans({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-sofia",
+});

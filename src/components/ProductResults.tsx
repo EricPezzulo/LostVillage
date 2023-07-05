@@ -1,6 +1,5 @@
 import type { FC } from "react";
 import ProductCard from "./ProductCard";
-import { api } from "~/utils/api";
 
 interface ProductsProps {
   products: Product[];
