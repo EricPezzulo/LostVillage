@@ -13,7 +13,7 @@ const ptSans = PT_Sans({
 
 const MissionStatement = () => {
   return (
-    <div className="min-h-full bg-[#fff5e3] sm:min-h-0 ">
+    <div className="min-h-full bg-[#fff5e3] sm:flex  sm:min-h-0 sm:items-center sm:justify-center">
       <div className="mx-8 max-w-2xl pb-10 ">
         <h4
           className={`${ptSans.variable} pb-3 pt-8 font-PT-sans text-3xl font-bold`}

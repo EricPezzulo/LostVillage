@@ -27,7 +27,7 @@ const ProductDescription: React.FC<DescriptionProps> = ({ description }) => {
     >
       <div className="flex w-full justify-between">
         <h4 className={`${ptSans.variable} font-PT-sans font-semibold`}>
-          Details
+          Description
         </h4>
         <AnimatePresence>
           <motion.div

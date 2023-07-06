@@ -15,9 +15,6 @@ import { PrismaClient } from "@prisma/client";
 import "swiper/css";
 import NavigateImageSliderButtons from "~/components/elements/NavigateImageSliderButtons";
 import RecommendedProducts from "~/components/ProductComponets/RecommendedProducts";
-
-import { IoCloseOutline } from "react-icons/io5";
-import { AnimatePresence, motion } from "framer-motion";
 import classNames from "classnames";
 import ClothingSizeVariantGrid from "~/components/ClothingSizeVariantGrid";
 
@@ -66,7 +63,7 @@ const Page: NextPage<pageProps> = ({ product, error }) => {
   useEffect(() => {
     if (colorVar && !varSelected) setVarSelected([colorVar]);
   }, [setVarSelected, varSelected, colorVar]);
-  console.log(varSelected);
+  console.log(selectedSize);
   if (error || !product) return <Custom404 />;
 
   return (
@@ -144,7 +141,6 @@ const Page: NextPage<pageProps> = ({ product, error }) => {
                 className=" flex h-10 w-36 items-center justify-center rounded-full bg-black hover:cursor-pointer sm:inset-0 sm:flex"
                 type="button"
                 disabled={!selectedSize}
-                // onClick={() => console.log("button works")}
               >
                 <p
                   className={` ${sofia.variable} font-sofia font-semibold text-white`}
@@ -169,10 +165,9 @@ const Page: NextPage<pageProps> = ({ product, error }) => {
           className="m-2 mx-5 flex h-14 w-5/6 items-center justify-center rounded-full bg-black hover:cursor-pointer sm:hidden"
           type="button"
           disabled={!selectedSize}
-          // onClick={() => console.log("button works")}
         >
           <p
-            className={` ${sofia.variable} font-sofia font-semibold text-white`}
+            className={`${sofia.variable} font-sofia font-semibold text-white`}
           >
             {!selectedSize ? "SELECT SIZE" : "ADD TO BAG"}
           </p>
@@ -200,14 +195,16 @@ const Page: NextPage<pageProps> = ({ product, error }) => {
               />
             </div>
           </div>
+
+          {/* BUG HERE-- visual glitch with responsive CSS */}
           <RecommendedProducts
+            setSelectedSize={setSelectedSize}
             setVarSelected={setVarSelected}
             prevEl={prevEl}
             nextEl={nextEl}
           />
         </div>
       </div>
-      {/* </motion.div> */}
     </div>
   );
 };

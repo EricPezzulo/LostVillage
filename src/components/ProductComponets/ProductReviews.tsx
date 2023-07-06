@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { BiChevronDown } from "react-icons/bi";
 import StarRating from "./StarRating";
 import { api } from "~/utils/api";
-import type { RouterOutputs } from "~/utils/api";
+// import type { RouterOutputs } from "~/utils/api";
 import type { FC } from "react";
 
 // type ReviewWithUser = RouterOutputs["reviews"]["getReviewsByProductId"][number];
@@ -22,7 +22,7 @@ interface ReviewProps {
 }
 
 const ProductReview: FC<ReviewProps> = ({ review }) => {
-  console.log(review);
+  // console.log(review);
   // if (reviewsIsLoading) return <div>Loading...</div>;
   // if (!review) return <div>Something went wrong</div>;
 

@@ -30,7 +30,7 @@ const ProductResults: FC<ProductsProps> = ({ products }) => {
   return (
     <div
       id="featured-products-section"
-      className="grid w-full grid-cols-2 place-items-center sm:grid-cols-3 "
+      className="grid w-full grid-cols-2 place-items-center sm:grid-cols-3 lg:grid-cols-4 "
     >
       {products?.map((product, key) => (
         <ProductCard

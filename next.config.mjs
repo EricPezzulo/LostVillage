@@ -19,7 +19,7 @@ const config = {
     defaultLocale: "en",
   },
   images: {
-    domains: ["static.nike.com", "localhost"],
+    domains: ["static.nike.com", "localhost", "assets.adidas.com"],
   },
 };
 

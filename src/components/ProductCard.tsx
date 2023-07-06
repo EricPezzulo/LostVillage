@@ -28,7 +28,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       <Link href={`/products/${productId}`}>
         <div className="flex flex-col">
           <img
-            className="object-cover"
+            className="h-56 w-full object-contain"
             src={variants?.[0]?.images?.[0]}
             alt={title}
           />

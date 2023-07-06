@@ -15,12 +15,14 @@ interface ElementProps {
   prevEl: HTMLElement | null;
   nextEl: HTMLElement | null;
   setVarSelected: React.Dispatch<React.SetStateAction<Variant[] | null>>;
+  setSelectedSize: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 const RecommendedProducts: FC<ElementProps> = ({
   prevEl,
   nextEl,
   setVarSelected,
+  setSelectedSize,
 }) => {
   const { data } = api.products.getAll.useQuery();
 
@@ -54,12 +56,14 @@ const RecommendedProducts: FC<ElementProps> = ({
         {data?.products?.map((elem, key) => (
           <SwiperSlide key={key}>
             <Link
-              onClick={() =>
+              href={`/products/${elem.productId}`}
+              type="button"
+              onClick={() => {
                 setVarSelected(
                   elem?.variants?.[0]?.images?.[0] ? [elem.variants[0]] : null
-                )
-              }
-              href={`/products/${elem.productId}`}
+                );
+                setSelectedSize(null);
+              }}
             >
               <img
                 src={elem?.variants?.[0]?.images?.[0]}
