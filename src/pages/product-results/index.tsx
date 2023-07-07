@@ -12,7 +12,6 @@ const Page = ({ query }: { query: ParsedUrlQuery }) => {
   const { data: products } = api.products.getProductsByQueryParams.useQuery({
     category: typeof category === "string" ? category : "allCategories",
   });
-
   if (!products) return <div className="flex grow flex-col">Loading...</div>;
   if (products?.length === 0) return <Custom404 />;
   return (

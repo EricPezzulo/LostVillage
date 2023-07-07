@@ -19,26 +19,28 @@ import classNames from "classnames";
 import ClothingSizeVariantGrid from "~/components/ClothingSizeVariantGrid";
 import { useDispatch } from "react-redux";
 import { addToCart } from "~/redux/features/cart/cartSlice";
-import { type Product } from "~/components/ProductResults";
+
 interface pageProps {
   productId: string;
-  product: {
-    id: string;
-    productId: string;
-    title: string;
-    createdAt: Date;
-    updatedAt: Date;
-    description: string;
-    details: string[];
-    imageURLs: string[];
-    variants: Variant[];
-    clothingSizes: string[];
-    shoeSizes: number[];
-    price: number;
-    category: string;
-    subCategory: string;
-  };
+  product: Product;
   error: string;
+}
+
+interface Product {
+  id: string;
+  productId: string;
+  title: string;
+  createdAt: Date;
+  updatedAt: Date;
+  description: string;
+  details: string[];
+  imageURLs: string[];
+  variants: Variant[];
+  clothingSizes: string[];
+  shoeSizes: number[];
+  price: number;
+  category: string;
+  subCategory: string;
 }
 interface Variant {
   id: string;

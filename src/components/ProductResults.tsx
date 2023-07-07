@@ -1,25 +1,26 @@
 import { type FC } from "react";
 import ProductCard from "./ProductCard";
 
-export interface ProductsProps {
+interface ProductsProps {
   products: Product[];
 }
-export interface Product {
-  category: string;
-  clothingSizes?: string[] | undefined;
+
+interface Product {
+  id: string;
+  productId: string;
+  title: string;
   createdAt: Date;
+  updatedAt: Date;
   description: string;
   details: string[];
-  id: string;
-  price: number;
-  productId: string;
-  shoeSizes?: number[] | undefined;
-  subCategory: string;
-  title: string;
-  updatedAt: Date;
   variants: Variants[];
+  clothingSizes: string[];
+  shoeSizes: number[];
+  price: number;
+  category: string;
+  subCategory: string;
 }
-export interface Variants {
+interface Variants {
   id: string;
   productId: string;
   color: string;
