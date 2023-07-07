@@ -63,7 +63,7 @@ const Page: NextPage<pageProps> = ({ product, error }) => {
   useEffect(() => {
     if (colorVar && !varSelected) setVarSelected([colorVar]);
   }, [setVarSelected, varSelected, colorVar]);
-  console.log(selectedSize);
+
   if (error || !product) return <Custom404 />;
 
   return (

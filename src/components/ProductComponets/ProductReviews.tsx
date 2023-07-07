@@ -5,7 +5,7 @@ import { BiChevronDown } from "react-icons/bi";
 import StarRating from "./StarRating";
 import { api } from "~/utils/api";
 // import type { RouterOutputs } from "~/utils/api";
-import type { FC } from "react";
+import { type FC } from "react";
 
 // type ReviewWithUser = RouterOutputs["reviews"]["getReviewsByProductId"][number];
 

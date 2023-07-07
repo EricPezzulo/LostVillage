@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { PT_Sans, Sofia_Sans } from "next/font/google";
-import type { FC } from "react";
+import { type FC } from "react";
 
 interface WomensDropDownProps {
   isWomenOpen: boolean;
