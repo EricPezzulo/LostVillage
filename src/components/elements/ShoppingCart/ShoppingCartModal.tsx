@@ -1,8 +1,7 @@
 import { IoCloseOutline } from "react-icons/io5";
 import CartItem from "./CartItem";
-import { useEffect, type FC, useContext } from "react";
+import { useEffect, type FC } from "react";
 import useViewportSize from "~/hooks/useViewportSize";
-import { CartContext } from "~/CartContext";
 
 interface ShoppingCartModalProps {
   isCartOpen: boolean;
@@ -13,9 +12,6 @@ const ShoppingCartModal: FC<ShoppingCartModalProps> = ({
   isCartOpen,
   setIsCartOpen,
 }) => {
-  const cartData = useContext(CartContext);
-  console.log(cartData);
-
   const handleCloseCart = () => {
     setIsCartOpen(false);
   };

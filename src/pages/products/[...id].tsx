@@ -17,15 +17,17 @@ import NavigateImageSliderButtons from "~/components/elements/NavigateImageSlide
 import RecommendedProducts from "~/components/ProductComponets/RecommendedProducts";
 import classNames from "classnames";
 import ClothingSizeVariantGrid from "~/components/ClothingSizeVariantGrid";
-
+import { useDispatch } from "react-redux";
+import { addToCart } from "~/redux/features/cart/cartSlice";
+import { type Product } from "~/components/ProductResults";
 interface pageProps {
   productId: string;
   product: {
     id: string;
     productId: string;
     title: string;
-    createdAt: string;
-    updatedAt: string;
+    createdAt: Date;
+    updatedAt: Date;
     description: string;
     details: string[];
     imageURLs: string[];
@@ -64,8 +66,21 @@ const Page: NextPage<pageProps> = ({ product, error }) => {
     if (colorVar && !varSelected) setVarSelected([colorVar]);
   }, [setVarSelected, varSelected, colorVar]);
 
-  if (error || !product) return <Custom404 />;
+  const dispatch = useDispatch();
 
+  const handleAddToCart = (product: Product) => {
+    dispatch(
+      addToCart({
+        title: product.title,
+        id: product.id,
+        price: product.price,
+        cartQuantity: 2,
+      })
+    );
+    console.log(product.title);
+  };
+
+  if (error || !product) return <Custom404 />;
   return (
     <div className="relative flex w-full max-w-7xl grow flex-col items-center bg-white sm:justify-center sm:self-center sm:py-10">
       <div>
@@ -141,6 +156,7 @@ const Page: NextPage<pageProps> = ({ product, error }) => {
                 className=" flex h-10 w-36 items-center justify-center rounded-full bg-black hover:cursor-pointer sm:inset-0 sm:flex"
                 type="button"
                 disabled={!selectedSize}
+                onClick={() => handleAddToCart(product)}
               >
                 <p
                   className={` ${sofia.variable} font-sofia font-semibold text-white`}
@@ -165,6 +181,7 @@ const Page: NextPage<pageProps> = ({ product, error }) => {
           className="m-2 mx-5 flex h-14 w-5/6 items-center justify-center rounded-full bg-black hover:cursor-pointer sm:hidden"
           type="button"
           disabled={!selectedSize}
+          onClick={() => handleAddToCart(product)}
         >
           <p
             className={`${sofia.variable} font-sofia font-semibold text-white`}

@@ -1,10 +1,10 @@
 import { type FC } from "react";
 import ProductCard from "./ProductCard";
 
-interface ProductsProps {
+export interface ProductsProps {
   products: Product[];
 }
-interface Product {
+export interface Product {
   category: string;
   clothingSizes?: string[] | undefined;
   createdAt: Date;
@@ -15,11 +15,11 @@ interface Product {
   productId: string;
   shoeSizes?: number[] | undefined;
   subCategory: string;
-  title: string | null;
+  title: string;
   updatedAt: Date;
   variants: Variants[];
 }
-interface Variants {
+export interface Variants {
   id: string;
   productId: string;
   color: string;
