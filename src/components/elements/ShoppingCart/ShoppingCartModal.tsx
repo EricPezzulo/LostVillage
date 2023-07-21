@@ -18,7 +18,7 @@ const ShoppingCartModal: FC<ShoppingCartModalProps> = ({
   const { width } = useViewportSize();
 
   useEffect(() => {
-    if (width < 640) {
+    if (isCartOpen && width < 640) {
       document.body.classList.add("overflow-hidden");
     } else {
       document.body.classList.remove("overflow-hidden");

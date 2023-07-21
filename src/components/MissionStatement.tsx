@@ -1,15 +1,4 @@
-// import { Sofia_Sans } from "@next/font/google";
 import { PT_Sans } from "next/font/google";
-// const sofia = Sofia_Sans({
-//   subsets: ["latin"],
-//   weight: ["400", "700"],
-//   variable: "--font-sofia",
-// });
-const ptSans = PT_Sans({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-pt-sans",
-});
 
 const MissionStatement = () => {
   return (
@@ -54,3 +43,8 @@ const MissionStatement = () => {
 };
 
 export default MissionStatement;
+const ptSans = PT_Sans({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-pt-sans",
+});
